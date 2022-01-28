@@ -1,0 +1,8 @@
+[package]
+name = "ps-algorithm"
+version = "0.1.0"
+edition = "2021"
+publish = false
+authors = ["kiwiyou <kiwiyou@kiwiyou.dev>"]
+
+[dependencies]
