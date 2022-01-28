@@ -9,3 +9,4 @@ Rust implementations of algorithms and data structures used in Competitive Progr
 - Fenwick Tree (Binary Indexed Tree)
 - Fast Exponentiation
 - Disjoint Set Forest (Union-Find)
+- Z algorithm

@@ -25,16 +25,16 @@ mod test {
 
     impl Monoid for Mult {
         type T = u64;
-    
+
         fn apply(l: &u64, r: &u64) -> u64 {
             l * r % 1_000_000_009
         }
-    
+
         fn ident() -> u64 {
             1
         }
     }
-    
+
     #[test]
     fn test_modular_power() {
         assert_eq!(844428231, power::<Mult>(&2, 63));
