@@ -75,7 +75,13 @@ mod test {
         let mut graph = Graph::new(3, 2);
         graph.connect(0, 1, ());
         graph.connect(0, 2, ());
-        assert_eq!(vec![(2, &()), (1, &())], graph.neighbors(0).collect::<Vec<(usize, &())>>());
-        assert_eq!(Vec::<(usize, &())>::new(), graph.neighbors(1).collect::<Vec<(usize, &())>>());
+        assert_eq!(
+            vec![(2, &()), (1, &())],
+            graph.neighbors(0).collect::<Vec<(usize, &())>>()
+        );
+        assert_eq!(
+            Vec::<(usize, &())>::new(),
+            graph.neighbors(1).collect::<Vec<(usize, &())>>()
+        );
     }
 }

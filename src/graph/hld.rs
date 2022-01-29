@@ -195,9 +195,21 @@ mod test {
     fn path() {
         let tree = test_tree1();
         let hld = HeavyLight::new(1, &tree);
-        assert_eq!(vec![(7, 8), (0, 2)], hld.path(5, 3).collect::<Vec<(usize, usize)>>());
-        assert_eq!(vec![(7, 8), (0, 2)], hld.path(3, 5).collect::<Vec<(usize, usize)>>());
-        assert_eq!(vec![(4, 4), (5, 6), (1, 2)], hld.path(8, 7).collect::<Vec<(usize, usize)>>());
-        assert_eq!(vec![(4, 4), (5, 6), (1, 2)], hld.path(7, 8).collect::<Vec<(usize, usize)>>());
+        assert_eq!(
+            vec![(7, 8), (0, 2)],
+            hld.path(5, 3).collect::<Vec<(usize, usize)>>()
+        );
+        assert_eq!(
+            vec![(7, 8), (0, 2)],
+            hld.path(3, 5).collect::<Vec<(usize, usize)>>()
+        );
+        assert_eq!(
+            vec![(4, 4), (5, 6), (1, 2)],
+            hld.path(8, 7).collect::<Vec<(usize, usize)>>()
+        );
+        assert_eq!(
+            vec![(4, 4), (5, 6), (1, 2)],
+            hld.path(7, 8).collect::<Vec<(usize, usize)>>()
+        );
     }
 }
