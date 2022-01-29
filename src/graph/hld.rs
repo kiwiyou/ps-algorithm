@@ -91,22 +91,19 @@ impl Iterator for Path<'_> {
     type Item = (usize, usize);
 
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some((mut u, mut v)) = self.endpoints {
-            if self.hld.heads[u] == self.hld.heads[v] {
-                if self.hld.depths[u] > self.hld.depths[v] {
-                    std::mem::swap(&mut u, &mut v);
-                }
-                self.endpoints = None;
-                Some((self.hld.pos[u], self.hld.pos[v]))
-            } else {
-                if self.hld.depths[self.hld.heads[u]] > self.hld.depths[self.hld.heads[v]] {
-                    std::mem::swap(&mut u, &mut v);
-                }
-                self.endpoints = Some((u, self.hld.parents[self.hld.heads[v]]));
-                Some((self.hld.pos[self.hld.heads[v]], self.hld.pos[v]))
+        let (mut u, mut v) = self.endpoints?;
+        if self.hld.heads[u] == self.hld.heads[v] {
+            if self.hld.depths[u] > self.hld.depths[v] {
+                std::mem::swap(&mut u, &mut v);
             }
+            self.endpoints = None;
+            Some((self.hld.pos[u], self.hld.pos[v]))
         } else {
-            None
+            if self.hld.depths[self.hld.heads[u]] > self.hld.depths[self.hld.heads[v]] {
+                std::mem::swap(&mut u, &mut v);
+            }
+            self.endpoints = Some((u, self.hld.parents[self.hld.heads[v]]));
+            Some((self.hld.pos[self.hld.heads[v]], self.hld.pos[v]))
         }
     }
 }

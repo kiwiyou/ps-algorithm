@@ -45,13 +45,10 @@ impl<'a, T> Iterator for Neighbors<'a, T> {
     type Item = (usize, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        if let Some(next) = self.next {
-            let (next, ep, data) = &self.graph.edges[next];
-            self.next = *next;
-            Some((*ep, data))
-        } else {
-            None
-        }
+        let next = self.next?;
+        let (next, ep, data) = &self.graph.edges[next];
+        self.next = *next;
+        Some((*ep, data))
     }
 }
 
