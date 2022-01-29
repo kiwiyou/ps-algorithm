@@ -10,3 +10,5 @@ Rust implementations of algorithms and data structures used in Competitive Progr
 - Fast Exponentiation
 - Disjoint Set Forest (Union-Find)
 - Z algorithm
+- Graph
+- Heavy-Light Decomposition
