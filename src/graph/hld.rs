@@ -72,6 +72,10 @@ impl HeavyLight {
         obj.fill_heads(root, graph);
         obj
     }
+    
+    pub fn position(&self, node: usize) -> usize {
+        self.pos[node]
+    }
 
     pub fn path(&self, u: usize, v: usize) -> Path {
         Path {
