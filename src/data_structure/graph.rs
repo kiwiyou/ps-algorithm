@@ -1,6 +1,3 @@
-pub mod disjoint_set;
-pub mod hld;
-
 pub struct Graph<T> {
     nodes: Vec<Option<usize>>,
     edges: Vec<(Option<usize>, usize, T)>,

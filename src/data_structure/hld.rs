@@ -1,4 +1,4 @@
-use super::Graph;
+use crate::data_structure::Graph;
 
 pub struct HeavyLight {
     parents: Vec<usize>,
@@ -72,7 +72,7 @@ impl HeavyLight {
         obj.fill_heads(root, graph);
         obj
     }
-    
+
     pub fn position(&self, node: usize) -> usize {
         self.pos[node]
     }

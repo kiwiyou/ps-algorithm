@@ -1,4 +1,3 @@
-pub mod graph;
+pub mod data_structure;
 pub mod math;
-pub mod query;
 pub mod string;
