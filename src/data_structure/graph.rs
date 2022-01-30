@@ -1,51 +1,42 @@
 pub struct Graph<T> {
-    nodes: Vec<Option<usize>>,
-    edges: Vec<(Option<usize>, usize, T)>,
+    list: Vec<Vec<(usize, T)>>,
+    edges: usize,
 }
 
 impl<T> Graph<T> {
-    pub fn new(n: usize, e: usize) -> Self {
+    pub fn new(n: usize) -> Self {
         Self {
-            nodes: vec![None; n],
-            edges: Vec::with_capacity(e),
+            list: (0..n).map(|_| vec![]).collect(),
+            edges: 0,
         }
     }
 
     pub fn connect(&mut self, from: usize, to: usize, data: T) {
-        let new_edge = self.edges.len();
-        let prev = std::mem::replace(&mut self.nodes[from], Some(new_edge));
-        self.edges.push((prev, to, data));
+        self.list[from].push((to, data));
+        self.edges += 1;
     }
 
     pub fn neighbors(&self, node: usize) -> Neighbors<T> {
-        Neighbors {
-            graph: self,
-            next: self.nodes[node],
-        }
+        Neighbors(self.list[node].iter())
     }
 
     pub fn node_count(&self) -> usize {
-        self.nodes.len()
+        self.list.len()
     }
 
     pub fn edge_count(&self) -> usize {
-        self.edges.len()
+        self.edges
     }
 }
 
-pub struct Neighbors<'a, T> {
-    graph: &'a Graph<T>,
-    next: Option<usize>,
-}
+pub struct Neighbors<'a, T>(std::slice::Iter<'a, (usize, T)>);
 
 impl<'a, T> Iterator for Neighbors<'a, T> {
     type Item = (usize, &'a T);
 
     fn next(&mut self) -> Option<Self::Item> {
-        let next = self.next?;
-        let (next, ep, data) = &self.graph.edges[next];
-        self.next = *next;
-        Some((*ep, data))
+        let (node, data) = self.0.next()?;
+        Some((*node, data))
     }
 }
 
@@ -55,22 +46,20 @@ mod test {
 
     #[test]
     fn connect() {
-        let mut graph = Graph::new(2, 2);
+        let mut graph = Graph::new(2);
         graph.connect(0, 1, ());
-        assert_eq!(vec![Some(0), None], graph.nodes);
-        assert_eq!(vec![(None, 1, ())], graph.edges);
+        assert_eq!(vec![vec![(1, ())], vec![]], graph.list);
         graph.connect(0, 0, ());
-        assert_eq!(vec![Some(1), None], graph.nodes);
-        assert_eq!(vec![(None, 1, ()), (Some(0), 0, ())], graph.edges);
+        assert_eq!(vec![vec![(1, ()), (0, ())], vec![]], graph.list);
     }
 
     #[test]
     fn neighbors() {
-        let mut graph = Graph::new(3, 2);
+        let mut graph = Graph::new(3);
         graph.connect(0, 1, ());
         graph.connect(0, 2, ());
         assert_eq!(
-            vec![(2, &()), (1, &())],
+            vec![(1, &()), (2, &())],
             graph.neighbors(0).collect::<Vec<(usize, &())>>()
         );
         assert_eq!(

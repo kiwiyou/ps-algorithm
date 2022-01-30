@@ -5,4 +5,10 @@ edition = "2021"
 publish = false
 authors = ["kiwiyou <kiwiyou@kiwiyou.dev>"]
 
-[dependencies]
+[dev-dependencies]
+criterion = "0.3.5"
+rand = "0.8.4"
+
+[[bench]]
+name = "graph"
+harness = false
