@@ -124,7 +124,7 @@ mod test {
         //   5     4   3
         // /   \   |
         // 6   7   8
-        let mut tree = Graph::new(9);
+        let mut tree = Graph::new(9, 8);
         tree.connect(1, 0, ());
         tree.connect(1, 2, ());
         tree.connect(0, 5, ());
@@ -138,7 +138,7 @@ mod test {
 
     // Tree 1 in bidirectional manner.
     fn test_tree2() -> Graph<()> {
-        let mut tree = Graph::new(9);
+        let mut tree = Graph::new(9, 16);
         tree.connect(1, 0, ());
         tree.connect(1, 2, ());
         tree.connect(0, 5, ());
@@ -164,7 +164,7 @@ mod test {
         let hld = HeavyLight::new(1, &tree);
         assert_eq!(vec![1, 1, 1, 2, 0, 0, 5, 5, 4], hld.parents);
         assert_eq!(vec![2, 1, 2, 3, 3, 3, 4, 4, 4], hld.depths);
-        assert_eq!(vec![5, 0, 3, 3, 8, 7, 6, 7, 8], hld.chains);
+        assert_eq!(vec![5, 0, 3, 3, 8, 6, 6, 7, 8], hld.chains);
     }
 
     #[test]
@@ -173,23 +173,23 @@ mod test {
         let hld = HeavyLight::new(1, &tree);
         assert_eq!(vec![1, 1, 1, 2, 0, 0, 5, 5, 4], hld.parents);
         assert_eq!(vec![2, 1, 2, 3, 3, 3, 4, 4, 4], hld.depths);
-        assert_eq!(vec![5, 0, 3, 3, 8, 7, 6, 7, 8], hld.chains);
+        assert_eq!(vec![5, 0, 3, 3, 8, 6, 6, 7, 8], hld.chains);
     }
 
     #[test]
     fn fill_heads() {
         let tree = test_tree1();
         let hld = HeavyLight::new(1, &tree);
-        assert_eq!(vec![1, 1, 2, 2, 4, 1, 6, 1, 4], hld.heads);
-        assert_eq!(vec![1, 0, 7, 8, 5, 2, 4, 3, 6], hld.pos);
+        assert_eq!(vec![1, 1, 2, 2, 4, 1, 1, 7, 4], hld.heads);
+        assert_eq!(vec![1, 0, 7, 8, 5, 2, 3, 4, 6], hld.pos);
     }
 
     #[test]
     fn fill_heads_bidirectional() {
         let tree = test_tree2();
         let hld = HeavyLight::new(1, &tree);
-        assert_eq!(vec![1, 1, 2, 2, 4, 1, 6, 1, 4], hld.heads);
-        assert_eq!(vec![1, 0, 7, 8, 5, 2, 4, 3, 6], hld.pos);
+        assert_eq!(vec![1, 1, 2, 2, 4, 1, 1, 7, 4], hld.heads);
+        assert_eq!(vec![1, 0, 7, 8, 5, 2, 3, 4, 6], hld.pos);
     }
 
     #[test]
@@ -206,11 +206,11 @@ mod test {
         );
         assert_eq!(
             vec![(4, 4), (5, 6), (1, 2)],
-            hld.path(8, 6).collect::<Vec<(usize, usize)>>()
+            hld.path(8, 7).collect::<Vec<(usize, usize)>>()
         );
         assert_eq!(
             vec![(4, 4), (5, 6), (1, 2)],
-            hld.path(6, 8).collect::<Vec<(usize, usize)>>()
+            hld.path(7, 8).collect::<Vec<(usize, usize)>>()
         );
     }
 }

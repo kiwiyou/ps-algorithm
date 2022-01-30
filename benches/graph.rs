@@ -1,10 +1,10 @@
-use criterion::{criterion_group, criterion_main, Criterion, black_box, BenchmarkId, BatchSize};
+use criterion::{black_box, criterion_group, criterion_main, BatchSize, BenchmarkId, Criterion};
 use ps_algorithm::data_structure::Graph;
 use rand::{thread_rng, Rng};
 
 fn make_tree(n: usize) -> Graph<()> {
     let mut rng = thread_rng();
-    let mut graph = Graph::new(n);
+    let mut graph = Graph::new(n, n * 2);
     for i in 1..n {
         let j = rng.gen_range(0..i);
         graph.connect(i, j, ());
@@ -14,7 +14,7 @@ fn make_tree(n: usize) -> Graph<()> {
 }
 
 fn make_complete_graph(n: usize) -> Graph<()> {
-    let mut graph = Graph::new(n);
+    let mut graph = Graph::new(n, n * (n - 1));
     for i in 0..n {
         for j in 0..n {
             if i != j {
@@ -39,15 +39,31 @@ pub fn graph_dfs(c: &mut Criterion) {
     let mut group = c.benchmark_group("graph_dfs");
     for n in [100, 1000, 10000, 100000] {
         let tree = make_tree(n);
-        group.bench_with_input(BenchmarkId::from_parameter(format!("{} tree", n)), &tree, |b, tree| {
-            b.iter_batched(|| vec![false; tree.node_count()], |mut visited| dfs(&mut visited, 0, tree), BatchSize::LargeInput);
-        });
+        group.bench_with_input(
+            BenchmarkId::from_parameter(format!("{} tree", n)),
+            &tree,
+            |b, tree| {
+                b.iter_batched(
+                    || vec![false; tree.node_count()],
+                    |mut visited| dfs(&mut visited, 0, tree),
+                    criterion::BatchSize::LargeInput,
+                );
+            },
+        );
     }
     for n in [10, 100, 1000] {
         let complete = make_complete_graph(n);
-        group.bench_with_input(BenchmarkId::from_parameter(format!("{} complete", n)), &complete, |b, complete| {
-            b.iter_batched(|| vec![false; complete.node_count()], |mut visited| dfs(&mut visited, 0, complete), BatchSize::LargeInput);
-        });
+        group.bench_with_input(
+            BenchmarkId::from_parameter(format!("{} complete", n)),
+            &complete,
+            |b, complete| {
+                b.iter_batched(
+                    || vec![false; complete.node_count()],
+                    |mut visited| dfs(&mut visited, 0, complete),
+                    BatchSize::LargeInput,
+                );
+            },
+        );
     }
 }
 
